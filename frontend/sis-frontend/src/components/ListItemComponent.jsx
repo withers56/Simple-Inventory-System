@@ -18,8 +18,8 @@ const ListItemComponent = () => {
 
     listItems().then((response) => {
         setItems(response.data);
-        console.log(response.data);
-        console.log(response.data[1].category.name);
+        // console.log(response.data);
+        // console.log(response.data[1].category.name);
 
         response.data.forEach(element => {
             // console.log(element.category);
