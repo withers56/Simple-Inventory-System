@@ -6,6 +6,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 const ItemComponent = () => {
 
 const [name, setName] = useState('');
+const [url, setURL] = useState('');
+const [category, setCategory] = useState('');
 const {id} = useParams();
 const [errors, setErrors] = useState({
     name: ''
@@ -26,6 +28,11 @@ function handleName(e) {
     setName(e.target.value);
 }
 
+function handleURL(e) {
+    setURL(e.target.value);
+}
+
+//axios api call
 function saveOrUpdateItem(e) {
     e.preventDefault();
 
@@ -54,6 +61,7 @@ function saveOrUpdateItem(e) {
     
 }
 
+//validation to make sure name isnt blank
 function validateForm() {
     let valid = true;
 
@@ -73,6 +81,7 @@ function validateForm() {
     return valid;
 }
 
+//dynamically checks if id is passed, which means its an update
 function pageTitle() {
     if(id) {
         return <h2 className='text-center'>Update Item</h2>

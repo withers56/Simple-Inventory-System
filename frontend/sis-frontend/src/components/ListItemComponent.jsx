@@ -18,6 +18,16 @@ const ListItemComponent = () => {
 
     listItems().then((response) => {
         setItems(response.data);
+        console.log(response.data);
+        console.log(response.data[1].category.name);
+
+        response.data.forEach(element => {
+            // console.log(element.category);
+
+            // element.category != null ? console.log(element.category.name) : console.log('no category');
+            
+            
+        });
     }).catch(error => {
         console.error(error);
     })
@@ -51,6 +61,8 @@ const ListItemComponent = () => {
                 <tr>
                     <th>Item Id</th>
                     <th>Item Name</th>
+                    <th>Item URL</th>
+                    <th>Item Category</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -60,6 +72,8 @@ const ListItemComponent = () => {
                         <tr key={item.id}>
                             <td>{item.id}</td>
                             <td>{item.name}</td>
+                            <td>{item.url != null ? item.url : 'no url'}</td>
+                            <td>{item.category != null ? item.category.name : 'Uncategorized'}</td>
                             <td>
                                 <button className='btn btn-info' onClick={() => updateItem(item.id)}>Update</button>
                                 <button className='btn btn-danger' onClick={() => removeItem(item.id)}>Delete</button>
