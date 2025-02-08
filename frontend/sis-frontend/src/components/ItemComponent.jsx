@@ -250,7 +250,7 @@ function checkIfCreatingOrUpdating(id) {
 
   return (
     <div className='container'>
-        <div className='row'>
+        <div className=''>
             <div className='card mt-2'>
                 {
                     pageTitle()
