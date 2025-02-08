@@ -78,19 +78,25 @@ public class ItemsController {
     @DeleteMapping("{id}")
     private void deleteItem(@PathVariable Long id) {
         Item itemToDelete = itemRepository.getReferenceById(id);
+        
+
 
         //delete foreign keys to category and inventory
-        Category parentCategory = categoryRepository.getReferenceById(itemToDelete.getCategory().getId());
+        if (itemToDelete.getCategory() != null) {
 
-        //delete inventory in futrure vs setting null
-        Inventory itemsInventory = inventoryRepository.findByItemId(id);
+            Category parentCategory = categoryRepository.getReferenceById(itemToDelete.getCategory().getId());
+            parentCategory.getItems().remove(itemToDelete);
+            categoryRepository.save(parentCategory);
+        }
 
-        itemsInventory.setItem(null);
-        inventoryRepository.save(itemsInventory);
+        if (inventoryRepository.findByItemId(id) != null) {
+            //delete inventory in futrure vs setting null
+            Inventory itemsInventory = inventoryRepository.findByItemId(id);
+            itemsInventory.setItem(null);
+            inventoryRepository.save(itemsInventory);
+        }
 
-        parentCategory.getItems().remove(itemToDelete);
-        categoryRepository.save(parentCategory);
-
+        System.out.println(inventoryRepository.findByItemId(id));
 
         itemRepository.deleteById(id);
         System.out.println("Deleted item with id of: " + id);
