@@ -2,6 +2,7 @@
 import './App.css'
 import FooterComponent from './components/FooterComponent'
 import HeaderComponent from './components/HeaderComponent'
+import InventoryComponent from './components/InventoryComponent'
 import ItemComponent from './components/ItemComponent'
 import ListInventoryComponent from './components/ListInventoryComponent'
 import ListItemComponent from './components/ListItemComponent'
@@ -16,6 +17,7 @@ function App() {
         <HeaderComponent />
         <Routes>
           <Route path='/' element= { <ListInventoryComponent /> }></Route> 
+          <Route path='/edit-inventory/:id' element = { <InventoryComponent /> }></Route>
           <Route path='/items' element = { <ListItemComponent /> }></Route>
           <Route path='/add-item' element = { <ItemComponent /> }></Route>
           <Route path='/edit-item/:id' element = { <ItemComponent /> }></Route>  

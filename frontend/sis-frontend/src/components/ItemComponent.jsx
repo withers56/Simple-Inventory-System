@@ -22,6 +22,8 @@ const [maxQuantity, setMaxQuantity] = useState('');
 const [minQuantity, setMinQuantity] = useState('');
 
 
+
+
 // const [category, setCategory] = useState({});
 const {id} = useParams();
 const [errors, setErrors] = useState({
@@ -37,28 +39,6 @@ useEffect(() => {
 
             setName(response.data.name);
             setURL(response.data.url);
-
-            //construct category
-
-
-            // if (response.data.category != null) {
-
-            //     let cat = {
-            //         'id': response.data.category.id,
-            //         'name': response.data.category.name
-            //     }
-
-            //     setCategory(cat);
-
-            //     console.log(cat);
-                
-            // } else {
-            //     setCategory('Uncategorized');
-            // }
-
-            // console.log(category);
-            
-            
             
         }).catch(error => {
             console.error(error);

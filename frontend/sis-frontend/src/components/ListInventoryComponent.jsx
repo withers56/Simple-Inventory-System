@@ -10,12 +10,8 @@ import CardText from 'react-bootstrap/esm/CardText';
 const ListInventoryComponent = () => {
 
 const [inventories, setInventories] = useState([]);
+const navigator = useNavigate();
 
-function cardClickEvent(id) {
-    console.log('clicked card');
-    console.log(id);
-
-}
 
 useEffect(() => {
 
@@ -35,6 +31,13 @@ function getAllInventories() {
 
 }
 
+function cardClickEvent(id) {
+    console.log('clicked card');
+    console.log(id);
+
+    navigator(`/edit-inventory/${id}`)
+}
+
 
   return (
     <div className='container'>
@@ -43,7 +46,8 @@ function getAllInventories() {
            <Card.Body className='d-flex justify-content-between align-items-center'>
             <div>
                 <Card.Title>{inventory.item.name}</Card.Title>
-                <Card.Text>{inventory.item.category != null ? inventory.item.category.name : 'Uncategorized'}</Card.Text>
+                <Card.Text className='mb-2'>{inventory.item.category != null ? inventory.item.category.name : 'Uncategorized'}</Card.Text>
+                <Card.Text>{inventory.item.url != '' ? <a href={inventory.item.url} target='_tab'>Link</a> : ''}</Card.Text>
             </div>
             <div>
                 <Card.Title>{inventory.quantity}</Card.Title>
@@ -51,9 +55,6 @@ function getAllInventories() {
             </div>
              
              {/* <Button variant="primary">Go somewhere</Button> */}
-           </Card.Body>
-           <Card.Body>
-                <Card.Text>{inventory.item.url != '' ? <a href={inventory.item.url} target='_tab'>Link</a> : ''}</Card.Text>
            </Card.Body>
          </Card> 
         )}
