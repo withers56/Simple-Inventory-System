@@ -8,7 +8,7 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Badge from 'react-bootstrap/Badge';
-import { getInventory, listInventories } from '../services/InventoryService';
+import { getInventory, listInventories, updateInventoryQuantity } from '../services/InventoryService';
 import CardText from 'react-bootstrap/esm/CardText';
 import LoadingScreen from './LoadingScreen';
 
@@ -93,6 +93,21 @@ const InventoryComponent = () => {
         console.log(quantity);
     }
 
+    function updateQuantity() {
+        console.log('quanity to be passed to back end: ' + quantity);
+        console.log('id of iventory: ' + id);
+        
+        updateInventoryQuantity(quantity, id).then((response) => {
+            console.log(response.data);
+
+            navigator('/');
+            
+        }).catch(error => {
+            console.error(error);          
+        })
+        
+    }
+
   return (
     <div className='container'>
 
@@ -117,6 +132,11 @@ const InventoryComponent = () => {
                 </Row>
                 <Row>
                     <Col className='text-center'><h3>{category != null ? category.name : 'Uncategorized'}</h3></Col>
+                </Row>
+                <Row>
+                    <Col className='d-flex flex-column-reverse'>
+                        <Button variant="dark" onClick={() => updateQuantity(quantity, id)}>Submit</Button>
+                    </Col>
                 </Row>
             </div>
         )}
