@@ -11,6 +11,7 @@ import Badge from 'react-bootstrap/Badge';
 import { getInventory, listInventories, updateInventoryQuantity } from '../services/InventoryService';
 import CardText from 'react-bootstrap/esm/CardText';
 import LoadingScreen from './LoadingScreen';
+import { dateFormatter } from '../utils/utils';
 
 const InventoryComponent = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -31,6 +32,7 @@ const InventoryComponent = () => {
     const [maxQuantity, setMaxQuantity] = useState('');
     const [minQuantity, setMinQuantity] = useState('');
     const [unitOfMeasure, setUnitOfMeasure] = useState('');
+    const [lastModifiedDate, setLastModifiedDate] = useState('');
     
     
 
@@ -53,6 +55,7 @@ const InventoryComponent = () => {
                 setMaxQuantity(response.data.maxQuantity);
                 setMinQuantity(response.data.minQuantity);
                 setUnitOfMeasure(response.data.unitOfMeasure);
+                setLastModifiedDate(response.data.lastModifiedDate);
 
                 setCategory(response.data.item.category);
 
@@ -114,6 +117,9 @@ const InventoryComponent = () => {
         {isLoading ? (<LoadingScreen /> ) : (
             <div>
                 <Row>
+                    <Col className='text-center'>Date Last Modified: {dateFormatter(lastModifiedDate)}</Col>
+                </Row>
+                <Row className='mt-3'>
                     <Col xs={3} className='d-flex justify-content-center flex-column-reverse'>
                         <Button variant="dark" onClick={() => onMinusButton()}>-</Button>
                     </Col>

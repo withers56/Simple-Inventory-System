@@ -49,7 +49,7 @@ function cardClickEvent(id) {
                 <Card.Text className='mb-2'>{inventory.item.category != null ? inventory.item.category.name : 'Uncategorized'}</Card.Text>
                 <Card.Text>{inventory.item.url != '' ? <a href={inventory.item.url} target='_tab'>Link</a> : ''}</Card.Text>
             </div>
-            <div>
+            <div className='d-flex flex-column align-items-end'>
                 <Card.Title>{inventory.quantity}</Card.Title>
                 <Card.Text>{inventory.unitOfMeasure}</Card.Text>
             </div>

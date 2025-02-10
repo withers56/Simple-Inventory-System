@@ -1,5 +1,6 @@
 package com.william.backend.web;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -60,6 +61,7 @@ public class InventoryController {
         inventoryToAdd.setMaxQuantity(newInventory.getMaxQuantity());
         inventoryToAdd.setMinQuantity(newInventory.getMinQuantity());
         inventoryToAdd.setUnitOfMeasure(newInventory.getUnitOfMeasure());
+        inventoryToAdd.setLastModifiedDate(LocalDateTime.now());
         inventoryToAdd.setItem(newInventory.getItem());
 
         // System.out.print("Adding item: " + itemToAdd.toString());
@@ -91,10 +93,21 @@ public class InventoryController {
         inventoryToUpdate.setMaxQuantity(inventory.getMaxQuantity());
         inventoryToUpdate.setMinQuantity(inventory.getMinQuantity());
         inventoryToUpdate.setUnitOfMeasure(inventory.getUnitOfMeasure());
+        inventoryToUpdate.setLastModifiedDate(LocalDateTime.now());
         
 
         inventoryRepository.save(inventoryToUpdate);
         System.out.println("Updating item with id of: " + id);
+    }
+
+    @PutMapping("/quantity/{id}")
+    private void updateQuantity(@PathVariable Long id, @RequestParam(value = "quantity") Double quantity) {
+        Inventory inventory = inventoryRepository.getReferenceById(id);
+
+        inventory.setQuantity(quantity);
+        inventory.setLastModifiedDate(LocalDateTime.now());
+
+        inventoryRepository.save(inventory);
     }
 
     @DeleteMapping("{id}")

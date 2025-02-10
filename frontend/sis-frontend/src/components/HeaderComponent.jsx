@@ -33,7 +33,7 @@ const HeaderComponent = () => {
 
 
 
-    <Navbar expand="lg" className="bg-body-tertiary">
+    <Navbar expand="lg" bg='dark' data-bs-theme="dark">
       <Container>
         <Navbar.Brand href="/">SIS</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />

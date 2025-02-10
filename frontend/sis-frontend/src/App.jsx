@@ -22,7 +22,7 @@ function App() {
           <Route path='/add-item' element = { <ItemComponent /> }></Route>
           <Route path='/edit-item/:id' element = { <ItemComponent /> }></Route>  
         </Routes>
-        <FooterComponent />
+        {/* <FooterComponent /> */}
       </BrowserRouter> 
     </>
   )
