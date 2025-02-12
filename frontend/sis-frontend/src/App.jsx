@@ -7,6 +7,7 @@ import ItemComponent from './components/ItemComponent'
 import ListInventoryComponent from './components/ListInventoryComponent'
 import ListItemComponent from './components/ListItemComponent'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import UpdateInventoryComponent from './components/UpdateInventoryComponent'
 
 function App() {
   
@@ -20,7 +21,8 @@ function App() {
           <Route path='/edit-inventory/:id' element = { <InventoryComponent /> }></Route>
           <Route path='/items' element = { <ListItemComponent /> }></Route>
           <Route path='/add-item' element = { <ItemComponent /> }></Route>
-          <Route path='/edit-item/:id' element = { <ItemComponent /> }></Route>  
+          <Route path='/edit-item/:id' element = { <ItemComponent /> }></Route> 
+          <Route path='/edit-inventory-settings/:id' element = { <UpdateInventoryComponent /> }></Route>
         </Routes>
         {/* <FooterComponent /> */}
       </BrowserRouter> 

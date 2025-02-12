@@ -23,6 +23,7 @@ const InventoryComponent = () => {
 
     const [name, setName] = useState('');
     const [url, setURL] = useState('');
+    const [itemId, setItemId] = useState('');
     
     const [category, setCategory] = useState('');
     const [catName, setCatName] = useState('');
@@ -33,10 +34,6 @@ const InventoryComponent = () => {
     const [minQuantity, setMinQuantity] = useState('');
     const [unitOfMeasure, setUnitOfMeasure] = useState('');
     const [lastModifiedDate, setLastModifiedDate] = useState('');
-    
-    
-
-    console.log('passed id: ' + id);
     
     //useState variables for each field becuase it will run once before useEffect and will be undefined
 
@@ -50,6 +47,7 @@ const InventoryComponent = () => {
 
                 setName(response.data.item.name);
                 setURL(response.data.item.url);
+                setItemId(response.data.item.id);
 
                 setQuantity(response.data.quantity);
                 setMaxQuantity(response.data.maxQuantity);
@@ -119,6 +117,9 @@ const InventoryComponent = () => {
                 <Row>
                     <Col className='text-center'>Date Last Modified: {dateFormatter(lastModifiedDate)}</Col>
                 </Row>
+                <Row>
+                    <Col className='text-center'>{url != '' ? <a href={url} target='_tab'>Automatic ordering link</a> : ''}</Col>
+                </Row>
                 <Row className='mt-3'>
                     <Col xs={3} className='d-flex justify-content-center flex-column-reverse'>
                         <Button variant="dark" onClick={() => onMinusButton()}>-</Button>
@@ -134,14 +135,24 @@ const InventoryComponent = () => {
                     <Col className='text-center mt-2'><h1>{name}</h1></Col>
                 </Row>
                 <Row>
-                    <Col className='text-center'><h3>{unitOfMeasure}</h3></Col>
+                    <Col className='text-center'><h3>{unitOfMeasure}(s)</h3></Col>
                 </Row>
                 <Row>
                     <Col className='text-center'><h3>{category != null ? category.name : 'Uncategorized'}</h3></Col>
                 </Row>
                 <Row>
+                    <Col className='d-flex flex-column-reverse my-5'>
+                        <Button variant="success" onClick={() => updateQuantity(quantity, id)}>Submit Count</Button>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col className='d-flex flex-column-reverse my-2'>
+                        <Button variant="danger" onClick={() => navigator('/')}>Cancel</Button>
+                    </Col>
+                </Row>
+                <Row>
                     <Col className='d-flex flex-column-reverse'>
-                        <Button variant="dark" onClick={() => updateQuantity(quantity, id)}>Submit</Button>
+                        <Button variant="primary" onClick={() => navigator(`/edit-inventory-settings/${id}`)}>Update</Button>
                     </Col>
                 </Row>
             </div>
