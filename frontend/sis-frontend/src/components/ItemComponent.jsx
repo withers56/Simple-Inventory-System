@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { createItemAndInventory } from '../services/InventoryService';
 import InventoryFormFragment from '../form/InventoryFormFragment';
 import { categoryArray } from '../DummyData/DummyCatData';
-import { getAllCategories } from '../services/CategoryService';
+import { listCategories } from '../services/CategoryService';
 
 const ItemComponent = () => {
 
@@ -49,7 +49,7 @@ useEffect(() => {
 useEffect(() => {
     //fetch categories and set vars
 
-    getAllCategories().then((response) => {
+    listCategories().then((response) => {
         console.log(response.data);
 
         setCategories(response.data);

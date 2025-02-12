@@ -6,11 +6,18 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import { listInventories } from '../services/InventoryService';
 import CardText from 'react-bootstrap/esm/CardText';
+import { listCategories } from '../services/CategoryService';
+import classnames from 'classnames';
 
 const ListInventoryComponent = () => {
 
+const[ALL_INVENTORIES, setALL_INVENTORIES] = useState([]);
+const [activeElement, setActiveElement] = useState(0);
+    
 const [inventories, setInventories] = useState([]);
 const navigator = useNavigate();
+
+const [categories, setCategories] = useState([]);
 
 
 useEffect(() => {
@@ -18,10 +25,38 @@ useEffect(() => {
     getAllInventories();
 }, [])
 
+useEffect(() => {
+    
+    getAllCategories();
+    
+}, [])
+
+function getAllCategories() {
+    listCategories().then((response) => {
+        console.log(response.data);
+
+        let allCategory = {
+            'id': 'all',
+            'name': 'All'
+        }
+
+        let catArray = response.data;
+
+        catArray.unshift(allCategory);
+        
+        setCategories(catArray);
+         
+    }).catch(error => {
+        console.error(error);
+    })
+}
+
+
 function getAllInventories() {
 
     listInventories().then((response) =>{
-        setInventories(response.data)
+        setInventories(response.data);
+        setALL_INVENTORIES(response.data);
         console.log(response.data);
         
     }).catch(error => {
@@ -38,9 +73,43 @@ function cardClickEvent(id) {
     navigator(`/edit-inventory/${id}`)
 }
 
+function handleCategoryTabEvent(categoryId, index) {
+    console.log(index);
+    
+
+    setActiveElement(index);
+    
+    console.log('clicked category tab with id: ' + categoryId);
+
+    console.log('inventories prior to filter: ' + inventories);
+    
+
+    if(categoryId == 'all') {
+        setInventories(ALL_INVENTORIES);
+
+        return;
+    }
+    
+    const filteredInventories = ALL_INVENTORIES.filter((object) => object.item.category.id == categoryId);
+
+    console.log(filteredInventories);
+
+    setInventories(filteredInventories);
+    
+}
+
 
   return (
     <div className='container'>
+        <div className='outer'>
+            {categories.map((category, index) =>
+                <div key={category.id}
+                     onClick={() => handleCategoryTabEvent(category.id, index)}
+                     className={activeElement === index ? 'bb' : ''}>
+                    {category.name}
+                </div>
+            )}
+        </div>
         {inventories.map(inventory => 
            <Card key={inventory.id} className='my-3' onClick={() => cardClickEvent(inventory.id)}>
            <Card.Body className='d-flex justify-content-between align-items-center'>
