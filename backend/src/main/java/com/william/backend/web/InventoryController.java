@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.william.backend.data.Category;
+import com.william.backend.data.CategoryRepository;
 import com.william.backend.data.Inventory;
 import com.william.backend.data.InventoryRepository;
 import com.william.backend.data.Item;
@@ -33,10 +35,12 @@ public class InventoryController {
 
     private InventoryRepository inventoryRepository;
     private ItemRepository itemRepository;
+    private CategoryRepository categoryRepository;
     
-    public InventoryController(InventoryRepository inventoryRepository, ItemRepository itemRepository) {
+    public InventoryController(InventoryRepository inventoryRepository, ItemRepository itemRepository, CategoryRepository categoryRepository) {
         this.inventoryRepository = inventoryRepository;
         this.itemRepository = itemRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     @GetMapping
@@ -94,6 +98,12 @@ public class InventoryController {
         inventoryToUpdate.setMinQuantity(inventory.getMinQuantity());
         inventoryToUpdate.setUnitOfMeasure(inventory.getUnitOfMeasure());
         inventoryToUpdate.setLastModifiedDate(LocalDateTime.now());
+
+        Category savedCategory = categoryRepository.save(inventory.getItem().getCategory());
+        inventory.getItem().setCategory(savedCategory);
+
+        Item savedItem = itemRepository.save(inventory.getItem());
+        inventoryToUpdate.setItem(savedItem);
         
 
         inventoryRepository.save(inventoryToUpdate);
