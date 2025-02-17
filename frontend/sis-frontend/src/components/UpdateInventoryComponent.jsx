@@ -2,7 +2,7 @@
 import React, {useEffect, useState} from 'react'
 import { createItem, getItem, updateItem } from '../services/ItemService';
 import { useNavigate, useParams } from 'react-router-dom';
-import { createItemAndInventory, getInventory } from '../services/InventoryService';
+import { createItemAndInventory, getInventory, updateInventory } from '../services/InventoryService';
 import InventoryFormFragment from '../form/InventoryFormFragment';
 import { categoryArray } from '../DummyData/DummyCatData';
 import { listCategories } from '../services/CategoryService';
@@ -65,6 +65,7 @@ const UpdateInventoryComponent = () => {
         setMaxQuantity(response.data.maxQuantity);
         setMinQuantity(response.data.minQuantity);
         setUnitOfMeasure(response.data.unitOfMeasure);
+        setQuantity(response.data.quantity);
 
         setOriginalCatName(response.data.item.category.name);
         setOriginalCatId(response.data.item.category.id);
@@ -78,9 +79,37 @@ const UpdateInventoryComponent = () => {
     function handleSubmitBtn(e) {
       e.preventDefault();
 
+      console.log(catId);
+      console.log(catName);
+
+      console.log(originalCatId);
+      console.log(originalCatName);
+      
+      let catIdToUse = '';
+      let catNameToUse = '';
+      
+      
+
+      if(catId == '' || catName == '') {
+        catIdToUse = originalCatId;
+        catNameToUse = originalCatName;
+
+        console.log('in if');
+        
+      } else {
+        catIdToUse = catId;
+        catNameToUse = catName;
+      }
+
+
+      console.log(catId);
+      console.log(catName);
+      
+      
+
       const categoryObject = {
-        'id': catId,
-        'name': catName
+        'id': catIdToUse,
+        'name': catNameToUse
       }
 
       const itemObject = {
@@ -92,6 +121,7 @@ const UpdateInventoryComponent = () => {
 
       const inventoryObject = {
         id,
+        quantity,
         maxQuantity,
         minQuantity,
         unitOfMeasure,
@@ -101,8 +131,16 @@ const UpdateInventoryComponent = () => {
       console.log('inventory object ready to be sent to backend for update: ');
       
       console.log(inventoryObject);
+
+      updateInventory(id, inventoryObject).then((response) => {
+        console.log(response.data);
+        
+        navigator(`/edit-inventory/${id}`);
+      }).catch(error => {
+        console.error(error);
+      })
       
-      navigator(`/edit-inventory/${id}`);
+      
       
     }
 
