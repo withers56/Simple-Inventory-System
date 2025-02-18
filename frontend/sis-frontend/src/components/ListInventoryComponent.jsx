@@ -14,6 +14,7 @@ const ListInventoryComponent = () => {
 const [isLoading, setIsLoading] = useState(true);
 
 const[ALL_INVENTORIES, setALL_INVENTORIES] = useState([]);
+const[ALL_CATEGORIZED_INVENTORIES, setALL_CATEGORIZED_INVENTORIES] = useState([]);
 const [activeElement, setActiveElement] = useState(0);
     
 const [inventories, setInventories] = useState([]);
@@ -59,6 +60,18 @@ function getAllInventories() {
     listInventories().then((response) =>{
         setInventories(response.data);
         setALL_INVENTORIES(response.data);
+
+        let categorixedInvetories = [];
+
+
+        response.data.forEach(inventory => {
+            if (inventory.item.category != null) {
+                categorixedInvetories.push(inventory)
+            }
+        });
+
+        setALL_CATEGORIZED_INVENTORIES(categorixedInvetories);
+
         console.log(response.data);
 
         setIsLoading(false);
@@ -95,7 +108,7 @@ function handleCategoryTabEvent(categoryId, index) {
         return;
     }
     
-    const filteredInventories = ALL_INVENTORIES.filter((object) => object.item.category.id == categoryId);
+    const filteredInventories = ALL_CATEGORIZED_INVENTORIES.filter((object) => object.item.category.id == categoryId);
 
     console.log(filteredInventories);
 

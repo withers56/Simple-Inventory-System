@@ -67,8 +67,18 @@ const UpdateInventoryComponent = () => {
         setUnitOfMeasure(response.data.unitOfMeasure);
         setQuantity(response.data.quantity);
 
-        setOriginalCatName(response.data.item.category.name);
-        setOriginalCatId(response.data.item.category.id);
+        if (response.data.item.category == null) {
+          console.log('category is null');
+
+          setOriginalCatId(null);
+          setOriginalCatName(null);
+          
+        } else {
+          setOriginalCatName(response.data.item.category.name);
+          setOriginalCatId(response.data.item.category.id);
+        }
+
+        
         setIsLoading(false);
         
       }).catch(error => {
@@ -164,6 +174,16 @@ const UpdateInventoryComponent = () => {
     setCatId(parsedArray[1]);
     setCatName(parsedArray[0]);
     }
+
+    function checkIfOrignalCategory(currentCategory) {
+      
+      if (currentCategory.id != originalCatId) {
+        
+        return <option 
+                key={currentCategory.id}
+                value={currentCategory.name + ',' + currentCategory.id}>{currentCategory.name}</option>
+      }
+    }
     
   
     return (
@@ -214,14 +234,11 @@ const UpdateInventoryComponent = () => {
               <Form.Group as={Col} controlId="formGridCategoy">
                 <Form.Label>Category</Form.Label>
                 <Form.Select name="categories" id="item_categories" onChange={(e) => parseCategorySelect(e.target.value)}>
-                  <option value={originalCatName} key={originalCatId}>{originalCatName}</option>  
+                  <option value={originalCatName != null ? originalCatName : 'Uncategorized'} key={originalCatId}>{originalCatName != null ? originalCatName : 'Uncategorized'}</option>  
                   {
-                    categories.map(category => 
-                      <option 
-                      key={category.id}
-                      value={category.name + ',' + category.id}>{category.name}</option>)
+                    categories.map(category => checkIfOrignalCategory(category))
                   }
-                  <option value="uncategorized">Uncategorized</option>
+                  {originalCatName == null ? ('') : (<option value="uncategorized">Uncategorized</option>)}
                 </Form.Select>
               </Form.Group>
             </Row>
