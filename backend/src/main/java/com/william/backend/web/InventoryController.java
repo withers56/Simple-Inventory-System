@@ -98,9 +98,18 @@ public class InventoryController {
         inventoryToUpdate.setMinQuantity(inventory.getMinQuantity());
         inventoryToUpdate.setUnitOfMeasure(inventory.getUnitOfMeasure());
         inventoryToUpdate.setLastModifiedDate(LocalDateTime.now());
+        
+        if (inventory.getItem().getCategory().getId() != null) {
+            Category savedCategory = categoryRepository.save(inventory.getItem().getCategory());
 
-        Category savedCategory = categoryRepository.save(inventory.getItem().getCategory());
-        inventory.getItem().setCategory(savedCategory);
+            inventory.getItem().setCategory(savedCategory);
+        } else {
+            inventory.getItem().setCategory(null);
+        }
+
+
+        // Category savedCategory = categoryRepository.save(inventory.getItem().getCategory());
+        // inventory.getItem().setCategory(savedCategory);
 
         Item savedItem = itemRepository.save(inventory.getItem());
         inventoryToUpdate.setItem(savedItem);
