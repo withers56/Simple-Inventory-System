@@ -44,7 +44,7 @@ public class Inventory {
     private LocalDateTime lastModifiedDate;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "item_id", referencedColumnName = "id")
+    @JoinColumn(name = "item_id", referencedColumnName = "id", nullable = false)
     @JsonIgnoreProperties({"inventory"})
     private Item item;
 }

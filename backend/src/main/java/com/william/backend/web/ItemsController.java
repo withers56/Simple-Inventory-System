@@ -92,8 +92,7 @@ public class ItemsController {
         if (inventoryRepository.findByItemId(id) != null) {
             //delete inventory in futrure vs setting null
             Inventory itemsInventory = inventoryRepository.findByItemId(id);
-            itemsInventory.setItem(null);
-            inventoryRepository.save(itemsInventory);
+            inventoryRepository.delete(itemsInventory);
         }
 
         System.out.println(inventoryRepository.findByItemId(id));
