@@ -67,6 +67,9 @@ public class InventoryController {
         inventoryToAdd.setUnitOfMeasure(newInventory.getUnitOfMeasure());
         inventoryToAdd.setLastModifiedDate(LocalDateTime.now());
         inventoryToAdd.setItem(newInventory.getItem());
+        inventoryToAdd.setDeliveryDate(newInventory.getDeliveryDate());
+        inventoryToAdd.setLastDeliveryDate(newInventory.getLastDeliveryDate());
+        inventoryToAdd.setIsRepeatOrder(newInventory.getIsRepeatOrder());
 
         // System.out.print("Adding item: " + itemToAdd.toString());
         inventoryRepository.save(inventoryToAdd);
