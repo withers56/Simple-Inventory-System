@@ -5,7 +5,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { createItemAndInventory } from '../services/InventoryService';
 import InventoryFormFragment from '../form/InventoryFormFragment';
 import { categoryArray } from '../DummyData/DummyCatData';
-import { listCategories } from '../services/CategoryService';
+import { createCategory, listCategories } from '../services/CategoryService';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
 
 const ItemComponent = () => {
 
@@ -15,6 +18,8 @@ const [url, setURL] = useState('');
 const [categories, setCategories] = useState([]);
 const [catName, setCatName] = useState('');
 const [catId, setCatId] = useState('');
+
+const [newCategoryName, setNewCategoryName] = useState('');
 
 const [unitOfMeasure, setUnitOfMeasure] = useState('');
 const [quantity, setQuantity] = useState('');
@@ -48,7 +53,11 @@ useEffect(() => {
 
 useEffect(() => {
     //fetch categories and set vars
+    fetchCategories();
+    
+}, [])
 
+function fetchCategories() {
     listCategories().then((response) => {
         console.log(response.data);
 
@@ -58,7 +67,7 @@ useEffect(() => {
     }).catch(error => {
         console.error(error);
     })
-}, [])
+}
 
 function handleName(e) {
     setName(e.target.value);
@@ -176,6 +185,27 @@ function pageTitle() {
     }
 }
 
+function addCatBtn(e) {
+    e.preventDefault();
+
+    console.log('clicked btn to add category: ' + newCategoryName);
+
+    const categoryObject = {
+        'name': newCategoryName
+    }
+
+    createCategory(categoryObject).then((response) => {
+        console.log(response.data);
+
+        fetchCategories();
+        
+    }).catch(error => {
+        console.error(error);
+        
+    })
+    
+}
+
 function checkIfCreatingOrUpdating(id) {
     if (!id) {
         console.log('create item');
@@ -259,17 +289,34 @@ function checkIfCreatingOrUpdating(id) {
                                    /*onChange={handleName}*/
                                    onChange={(e) => setURL(e.target.value)}
                             />
-                            <label className='form-label'>Item Category: </label>
-                            <select className='form-select' name="categories" id="item_categories" onChange={(e) => parseCategorySelect(e.target.value)}>
-                                <option value="uncategorized">Uncategorized</option>
-                                {
-                                    categories.map(category => 
-                                        <option 
-                                            key={category.id}
-                                            value={category.name + ',' + category.id}>{category.name}</option>
-                                    )
-                                }
-                            </select>
+
+                            <Row>
+                                <Col>
+                                    <label className='form-label'>Item Category: </label>
+                                    <select className='form-select' name="categories" id="item_categories" onChange={(e) => parseCategorySelect(e.target.value)}>
+                                        <option value="uncategorized">Uncategorized</option>
+                                        {
+                                            categories.map(category => 
+                                                <option 
+                                                    key={category.id}
+                                                    value={category.name + ',' + category.id}>{category.name}</option>
+                                            )
+                                        }
+                                    </select>
+                                </Col>
+                                <Col>
+                                    <label className='form-label'>Add Category</label>    
+                                    <div className='input-group'>    
+                                        <input type="text" 
+                                               className='form-control'
+                                               value={newCategoryName}
+                                               onChange={(e) => setNewCategoryName(e.target.value)}/>  
+                                        <button className='btn btn-outline-secondary' onClick={addCatBtn}>Add</button>        
+                                    </div>     
+                                </Col>
+                            </Row>
+
+                            
                             {checkIfCreatingOrUpdating(id)}
 
                         </div>
