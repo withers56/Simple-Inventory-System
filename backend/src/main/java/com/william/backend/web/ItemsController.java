@@ -70,6 +70,7 @@ public class ItemsController {
         Item itemToUpdate = itemRepository.getReferenceById(id);
         itemToUpdate.setName(item.getName());
         itemToUpdate.setUrl(item.getUrl());
+        itemToUpdate.setCategory(item.getCategory());
 
         itemRepository.save(itemToUpdate);
         System.out.println("Updating item with id of: " + id);

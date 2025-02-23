@@ -31,9 +31,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class CategoryController {
 
     private CategoryRepository categoryRepository;
+    private ItemRepository itemRepository;
     
-    public CategoryController(CategoryRepository categoryRepository) {
+    public CategoryController(CategoryRepository categoryRepository, ItemRepository itemRepository) {
         this.categoryRepository = categoryRepository;
+        this.itemRepository = itemRepository;
     }
 
     @GetMapping
@@ -68,6 +70,20 @@ public class CategoryController {
 
     @DeleteMapping("{id}")
     private void deleteCategory(@PathVariable Long id) {
+        List<Item> itemsToSetNull = new ArrayList<>();
+
+
+        Category category = categoryRepository.getReferenceById(id);
+
+        for (Item item : category.getItems()) {
+            item.setCategory(null);
+
+            itemsToSetNull.add(item);
+        }
+
+        itemRepository.saveAll(itemsToSetNull);
+        
+
         categoryRepository.deleteById(id);
     }
     

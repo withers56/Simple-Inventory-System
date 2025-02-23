@@ -38,11 +38,12 @@ public class Item {
     private String url;
 
     @ManyToOne
-    @JoinTable(
-            name = "item_categories",
-            joinColumns = @JoinColumn(name = "item_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id")
-        )
+    // @JoinTable(
+    //         name = "item_categories",
+    //         joinColumns = @JoinColumn(name = "item_id", nullable = true),
+    //         inverseJoinColumns = @JoinColumn(name = "category_id")
+    //     )
+    @JoinColumn(name = "category_id", nullable = true)
     @JsonIgnoreProperties({"items"})
     private Category category;
 }
