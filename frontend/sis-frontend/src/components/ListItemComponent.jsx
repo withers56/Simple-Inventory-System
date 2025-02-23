@@ -3,6 +3,9 @@ import React, {useEffect, useState} from 'react'
 import { listItems, deleteItem } from '../services/ItemService'
 import { useNavigate } from 'react-router-dom'
 
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
+
 const ListItemComponent = () => {
 
    const [items, setItems] = useState([])
@@ -54,7 +57,24 @@ const ListItemComponent = () => {
   return (
     <div className='container'>
 
-        <h2 className='text-center'>List of Items</h2>
+    <h2 className='text-center'>List of Items</h2>
+    <button className='btn btn-dark mb-2' onClick={addNewItem}>Add Item</button>
+
+        {items.map(item => 
+            <Card key={item.id} className='my-3'>
+                <Card.Body>
+                    <Card.Title>{item.name}</Card.Title>
+                    <Card.Text>{item.category != null ? item.category.name : 'Uncategorized'}</Card.Text>
+                    <Card.Text>{item.url != null || item.url == '' ? item.url : 'no url'}</Card.Text>
+                    <button className='btn btn-info' onClick={() => updateItem(item.id)}>Update</button>
+                    <button className='btn btn-danger mx-3' onClick={() => removeItem(item.id)}>Delete</button>
+                </Card.Body>
+            </Card>
+        )}
+
+
+
+        {/* <h2 className='text-center'>List of Items</h2>
         <button className='btn btn-dark mb-2' onClick={addNewItem}>Add Item</button>
         <table className='table table-striped table-bordered'>
             <thead>
@@ -81,7 +101,7 @@ const ListItemComponent = () => {
                         </tr>)
                 }
             </tbody>
-        </table>
+        </table> */}
     </div>
   )
 }

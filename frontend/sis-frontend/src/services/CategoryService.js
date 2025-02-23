@@ -5,3 +5,5 @@ import { REST_API_BASE_URL_CATEGORY } from "../KEYS";
 export const listCategories = () => axios.get(REST_API_BASE_URL_CATEGORY);
 
 export const createCategory = (category) => axios.post(REST_API_BASE_URL_CATEGORY + '/create', category);
+
+export const removeCategory = (id) => axios.delete(REST_API_BASE_URL_CATEGORY + '/' + id);

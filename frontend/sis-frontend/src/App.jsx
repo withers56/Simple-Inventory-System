@@ -8,6 +8,7 @@ import ListInventoryComponent from './components/ListInventoryComponent'
 import ListItemComponent from './components/ListItemComponent'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import UpdateInventoryComponent from './components/UpdateInventoryComponent'
+import ListCategoryComponent from './components/ListCategoryComponent'
 
 function App() {
   
@@ -23,6 +24,7 @@ function App() {
           <Route path='/add-item' element = { <ItemComponent /> }></Route>
           <Route path='/edit-item/:id' element = { <ItemComponent /> }></Route> 
           <Route path='/edit-inventory-settings/:id' element = { <UpdateInventoryComponent /> }></Route>
+          <Route path='/categories' element = { <ListCategoryComponent /> }></Route>
         </Routes>
         {/* <FooterComponent /> */}
       </BrowserRouter> 

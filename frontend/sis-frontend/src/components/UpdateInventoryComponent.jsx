@@ -247,9 +247,15 @@ const UpdateInventoryComponent = () => {
               <Form.Check type="checkbox" label="Check me out" />
             </Form.Group>
 
-            <Button variant="primary" type="submit" onClick={(e) => {handleSubmitBtn(e)}}>
-              Submit
-            </Button>
+            <Form.Group className="mb-3" id="formGridCheckbox">
+              <div className='d-flex justify-content-between'>
+                <Button variant="primary" type="submit" onClick={(e) => {handleSubmitBtn(e)}}>
+                  Submit
+                </Button>
+                <Button variant="primary" onClick={(e) => navigator(`/edit-inventory/${id}`)}>Back</Button>
+              </div>
+            </Form.Group>
+            
           </Form>
         </div>
       )}

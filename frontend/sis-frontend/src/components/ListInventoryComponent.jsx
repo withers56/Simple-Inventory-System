@@ -65,6 +65,8 @@ function getAllInventories() {
 
 
         response.data.forEach(inventory => {
+            console.log(inventory);
+            
             if (inventory.item.category != null) {
                 categorixedInvetories.push(inventory)
             }
