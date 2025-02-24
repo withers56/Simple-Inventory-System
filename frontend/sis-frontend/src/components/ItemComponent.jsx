@@ -18,6 +18,9 @@ const [url, setURL] = useState('');
 const [categories, setCategories] = useState([]);
 const [catName, setCatName] = useState('');
 const [catId, setCatId] = useState('');
+const [originalCatId, setOriginalCatId] = useState('');
+const [originalCatName, setOriginalCatName] = useState('');
+    
 
 const [newCategoryName, setNewCategoryName] = useState('');
 
@@ -37,25 +40,46 @@ const [errors, setErrors] = useState({
 const navigator = useNavigate();
 
 useEffect(() => {
+    fetchCategories();
     if(id) {
-        getItem(id).then((response) => {
-            console.log(response.data);
-            
-
-            setName(response.data.name);
-            setURL(response.data.url);
-            
-        }).catch(error => {
-            console.error(error);
-        })
+        getSelectedInventory(id);
     }
+
+    
 }, [id]);
 
-useEffect(() => {
-    //fetch categories and set vars
-    fetchCategories();
+// useEffect(() => {
+//     //fetch categories and set vars
+//     fetchCategories();
     
-}, [])
+// }, [])
+
+function getSelectedInventory(id) {
+    getItem(id).then((response) => {
+        console.log(response.data);
+        
+
+        setName(response.data.name);
+        setURL(response.data.url);
+
+        if (response.data.category == null) {
+            console.log('category is null');
+  
+            setOriginalCatId(null);
+            setOriginalCatName(null);
+            
+          } else {
+            setOriginalCatName(response.data.category.name);
+            setOriginalCatId(response.data.category.id);
+          }
+
+          console.log('cat info in fetch: ' + originalCatId, originalCatName);
+          
+        
+    }).catch(error => {
+        console.error(error);
+    })
+}
 
 function fetchCategories() {
     listCategories().then((response) => {
@@ -81,41 +105,52 @@ function handleURL(e) {
 function saveOrUpdateItem(e) {
     e.preventDefault();
 
-    let category = {
+    if (catId == null) {
+        setCatId(originalCatId);
+        setCatName(originalCatName);
+    }
+
+    let categoryObject = {
         'id': catId,
         'name': catName
     }
 
-    let item = {}
+    console.log(categoryObject);
+    
 
-    console.log(catId == '');
+    let itemObject = {}
+
     
     
     if (catId == '') {
-       item = {name, url} 
+       itemObject = {name, url} 
 
     } else {
-        item = {name, url, category}
+        itemObject = {name, url, 'category': categoryObject}
     }
 
-    console.log(category);
+    console.log('Item data ready to be sent to update: ');
+    console.log(itemObject);
     
-    console.log(item);
+    
+
+    
 
     const inventoryObject = {
         quantity,
         maxQuantity,
         minQuantity,
         unitOfMeasure,
-        item
+        'item': itemObject
     }
 
-    console.log('inventory data to be sent ot backend: ' + JSON.stringify(inventoryObject));
-
+    console.log('inventory data to be sent ot backend: ');
+    console.log(inventoryObject);
+    
 
     if(validateForm()) {
         if(id) {
-            updateItem(id, item).then((response) => {
+            updateItem(id, itemObject).then((response) => {
                 console.log(response.data);
                 navigator('/items');
             }).catch(error => {
@@ -156,25 +191,25 @@ function validateForm() {
 }
 
 function parseCategorySelect(selectValue) {
+    console.log(selectValue);
 
     if (selectValue == 'uncategorized') {
-        setCatId(null);
-        setCatName(null);
+      setCatId(null);
+      setCatName(null);
 
-        return;
-    }
+      return;
+  }
 
-    console.log(selectValue);
-    
-    const parsedArray = selectValue.split(',');
+  console.log(selectValue);
+  
+  const parsedArray = selectValue.split(',');
 
-    console.log(parsedArray[0]);
-    console.log(parsedArray[1]);
-    
-    setCatId(parsedArray[1]);
-    setCatName(parsedArray[0]);
-    
-}
+  console.log(parsedArray[0]);
+  console.log(parsedArray[1]);
+  
+  setCatId(parsedArray[1]);
+  setCatName(parsedArray[0]);
+  }
 
 //dynamically checks if id is passed, which means its an update
 function pageTitle() {
@@ -258,6 +293,17 @@ function checkIfCreatingOrUpdating(id) {
     return ''
 }
 
+function checkIfOrignalCategory(currentCategory) {
+      
+    if (currentCategory.id != originalCatId) {
+      
+      return <option 
+              key={currentCategory.id}
+              value={currentCategory.name + ',' + currentCategory.id}>{currentCategory.name}</option>
+    }
+  }
+
+
   return (
     <div className='container'>
         <div className=''>
@@ -293,16 +339,20 @@ function checkIfCreatingOrUpdating(id) {
                             <Row>
                                 <Col>
                                     <label className='form-label'>Item Category: </label>
-                                    <select className='form-select' name="categories" id="item_categories" onChange={(e) => parseCategorySelect(e.target.value)}>
-                                        <option value="uncategorized">Uncategorized</option>
+                                    {/* <select className='form-select' name="categories" id="item_categories" onChange={(e) => parseCategorySelect(e.target.value)}>
+                                        <option value={originalCatId != null ? originalCatName : 'Uncategorized'} key={originalCatId}>{originalCatName != null ? originalCatName : 'Uncategorized'}</option>
                                         {
-                                            categories.map(category => 
-                                                <option 
-                                                    key={category.id}
-                                                    value={category.name + ',' + category.id}>{category.name}</option>
-                                            )
+                                            categories.map(category => checkIfOrignalCategory(category))
                                         }
-                                    </select>
+                                    </select> */}
+
+                                        <Form.Select name="categories" id="item_categories" onChange={(e) => parseCategorySelect(e.target.value)}>
+                                        <option selected value={originalCatName != null ? originalCatName + ',' + originalCatId  : 'Uncategorized'} key={originalCatId}>{originalCatName != null ? originalCatName : 'Uncategorized'}</option>  
+                                        {
+                                            categories.map(category => checkIfOrignalCategory(category))
+                                        }
+                                        {originalCatName == null ? ('') : (<option value="uncategorized">Uncategorized</option>)}
+                                        </Form.Select>
                                 </Col>
                                 <Col>
                                     <label className='form-label'>Add Category</label>    

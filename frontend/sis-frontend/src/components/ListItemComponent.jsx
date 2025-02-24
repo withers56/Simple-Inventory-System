@@ -65,7 +65,7 @@ const ListItemComponent = () => {
                 <Card.Body>
                     <Card.Title>{item.name}</Card.Title>
                     <Card.Text>{item.category != null ? item.category.name : 'Uncategorized'}</Card.Text>
-                    <Card.Text>{item.url != null || item.url == '' ? item.url : 'no url'}</Card.Text>
+                    <Card.Text>{item.url != null ? item.url : 'no url'}</Card.Text>
                     <button className='btn btn-info' onClick={() => updateItem(item.id)}>Update</button>
                     <button className='btn btn-danger mx-3' onClick={() => removeItem(item.id)}>Delete</button>
                 </Card.Body>
