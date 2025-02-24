@@ -84,7 +84,8 @@ public class InventoryController {
         
         // check to see if item will have a category, if it does assign it
         if (newInventory.getItem().getCategory() != null) {
-            newItem.setCategory(newInventory.getItem().getCategory());
+            Category itemCategory = categoryRepository.getReferenceById(newInventory.getItem().getCategory().getId());
+            newItem.setCategory(itemCategory);
         }
             
         Item savedItem = itemRepository.save(newItem);
