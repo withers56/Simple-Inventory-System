@@ -15,3 +15,11 @@ export function dateFormatter(passedDate) {
 
     return formattedDate;
 }
+
+export function checkIfMinQuantityBlank(minQuantity) {
+    if (minQuantity == '') {
+        return 0;
+    }
+
+    return minQuantity;
+}

@@ -39,3 +39,8 @@
 .bb {
   border-bottom: 5px solid black;
 }
+
+.inventories-container {
+  overflow-y: auto;
+  height: 80vh;
+}

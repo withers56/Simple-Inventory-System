@@ -10,6 +10,7 @@ import { listCategories } from '../services/CategoryService';
 import classnames from 'classnames';
 import LoadingScreen from './LoadingScreen';
 
+
 const ListInventoryComponent = () => {
 const [isLoading, setIsLoading] = useState(true);
 
@@ -133,23 +134,25 @@ function handleCategoryTabEvent(categoryId, index) {
                     </div>
                 )}
             </div>
-            {inventories.map(inventory => 
-            <Card key={inventory.id} className='my-3' onClick={(e) => cardClickEvent(e, inventory.id)}>
-            <Card.Body className='d-flex justify-content-between align-items-center'>
-                <div>
-                    <Card.Title>{inventory.item.name}</Card.Title>
-                    <Card.Text className='mb-2'>{inventory.item.category != null ? inventory.item.category.name : 'Uncategorized'}</Card.Text>
-                    {/* <Card.Text>{inventory.item.url != '' ? <a href={inventory.item.url} target='_tab'>Link</a> : ''}</Card.Text> */}
-                </div>
-                <div className='d-flex flex-column align-items-end'>
-                    <Card.Title>{inventory.quantity}</Card.Title>
-                    <Card.Text>{inventory.unitOfMeasure}(s)</Card.Text>
-                </div>
-                
-                {/* <Button variant="primary">Go somewhere</Button> */}
-            </Card.Body>
-            </Card> 
-            )}
+            <div className='inventories-container'>
+                {inventories.map(inventory => 
+                <Card key={inventory.id} className='my-3' onClick={(e) => cardClickEvent(e, inventory.id)}>
+                <Card.Body className='d-flex justify-content-between align-items-center'>
+                    <div>
+                        <Card.Title>{inventory.item.name}</Card.Title>
+                        <Card.Text className='mb-2'>{inventory.item.category != null ? inventory.item.category.name : 'Uncategorized'}</Card.Text>
+                        {/* <Card.Text>{inventory.item.url != '' ? <a href={inventory.item.url} target='_tab'>Link</a> : ''}</Card.Text> */}
+                    </div>
+                    <div className='d-flex flex-column align-items-end'>
+                        <Card.Title>{inventory.quantity}</Card.Title>
+                        <Card.Text>{inventory.unitOfMeasure}(s)</Card.Text>
+                    </div>
+                    
+                    {/* <Button variant="primary">Go somewhere</Button> */}
+                </Card.Body>
+                </Card> 
+                )}
+            </div>   
         </div>
     )}
 

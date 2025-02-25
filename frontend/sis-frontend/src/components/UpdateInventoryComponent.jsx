@@ -218,6 +218,7 @@ const UpdateInventoryComponent = () => {
                 <Form.Control 
                   type="number" 
                   value={maxQuantity}
+                  placeholder='(Leave blank if no limit)'
                   onChange={(e) => setMaxQuantity(e.target.value)}/>
               </Form.Group>  
             </Row>
@@ -248,11 +249,13 @@ const UpdateInventoryComponent = () => {
             </Form.Group>
 
             <Form.Group className="mb-3" id="formGridCheckbox">
-              <div className='d-flex justify-content-between'>
-                <Button variant="primary" type="submit" onClick={(e) => {handleSubmitBtn(e)}}>
-                  Submit
-                </Button>
-                <Button variant="primary" onClick={(e) => navigator(`/edit-inventory/${id}`)}>Back</Button>
+              <div className='d-flex justify-content-end'>
+                <Button variant="success" 
+                        className='mx-3'
+                        type="submit" 
+                        onClick={(e) => {handleSubmitBtn(e)}}>Update</Button>
+                <Button variant="danger" 
+                        onClick={(e) => navigator(`/edit-inventory/${id}`)}>Back</Button>
               </div>
             </Form.Group>
             

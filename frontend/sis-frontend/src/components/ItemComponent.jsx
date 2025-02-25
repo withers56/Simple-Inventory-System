@@ -9,6 +9,7 @@ import { createCategory, listCategories } from '../services/CategoryService';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
+import { checkIfMinQuantityBlank } from '../utils/utils';
 
 const ItemComponent = () => {
 
@@ -35,7 +36,8 @@ const [minQuantity, setMinQuantity] = useState('');
 // const [category, setCategory] = useState({});
 const {id} = useParams();
 const [errors, setErrors] = useState({
-    name: ''
+    name: '',
+    unitOfMeasure: ''
 });
 const navigator = useNavigate();
 
@@ -133,14 +135,28 @@ function saveOrUpdateItem(e) {
     console.log(itemObject);
     
     
+    function checkIfQuantityBlank() {
+        if (quantity == '') {
+            return 0;
+        }
 
+        return quantity;
+    }
+
+    function checkIfUnitOfMeasureBlank() {
+        if (unitOfMeasure == '') {
+            return 'Unit'
+        }
+
+        return unitOfMeasure;
+    }
     
 
     const inventoryObject = {
-        quantity,
+        quantity: checkIfQuantityBlank(),
         maxQuantity,
-        minQuantity,
-        unitOfMeasure,
+        minQuantity: checkIfMinQuantityBlank(minQuantity),
+        unitOfMeasure: checkIfUnitOfMeasureBlank(),
         'item': itemObject
     }
 
@@ -251,7 +267,7 @@ function checkIfCreatingOrUpdating(id) {
                                    placeholder='Enter item quantity'
                                    name='unit of measure'
                                    value={unitOfMeasure} 
-                                   className={`form-control ${ errors.name ? 'is-invalid': ''}`}
+                                   className={`form-control`}
                                    /*onChange={handleName}*/
                                    onChange={(e) => setUnitOfMeasure(e.target.value)}
                             />
@@ -261,7 +277,7 @@ function checkIfCreatingOrUpdating(id) {
                                    placeholder='Enter item quantity'
                                    name='quantity'
                                    value={quantity} 
-                                   className={`form-control ${ errors.name ? 'is-invalid': ''}`}
+                                   className={`form-control`}
                                    /*onChange={handleName}*/
                                    onChange={(e) => setQuantity(e.target.value)}
                             />
@@ -271,7 +287,7 @@ function checkIfCreatingOrUpdating(id) {
                                    placeholder='Enter item max quantity'
                                    name='max quantity'
                                    value={maxQuantity} 
-                                   className={`form-control ${ errors.name ? 'is-invalid': ''}`}
+                                   className={`form-control`}
                                    /*onChange={handleName}*/
                                    onChange={(e) => setMaxQuantity(e.target.value)}
                             />
@@ -281,7 +297,7 @@ function checkIfCreatingOrUpdating(id) {
                                    placeholder='Enter item minimum quantity'
                                    name='min quantity'
                                    value={minQuantity} 
-                                   className={`form-control ${ errors.name ? 'is-invalid': ''}`}
+                                   className={`form-control`}
                                    /*onChange={handleName}*/
                                    onChange={(e) => setMinQuantity(e.target.value)}
                             />
@@ -315,7 +331,7 @@ function checkIfOrignalCategory(currentCategory) {
                     <form>
                         <div className='form-group mb-2'>
                             
-                            <label className='form-label'>Item Name: </label>
+                            <label className='form-label'>*Item Name: </label>
                             <input type="text"
                                    placeholder='Enter item name'
                                    name='name'
@@ -331,7 +347,7 @@ function checkIfOrignalCategory(currentCategory) {
                                    placeholder='Enter item url'
                                    name='url'
                                    value={url == null ? '' : url} 
-                                   className={`form-control ${ errors.name ? 'is-invalid': ''}`}
+                                   className={`form-control`}
                                    /*onChange={handleName}*/
                                    onChange={(e) => setURL(e.target.value)}
                             />

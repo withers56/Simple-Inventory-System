@@ -147,7 +147,7 @@ const InventoryComponent = () => {
                 </Row>
                 <Row>
                     <Col className='d-flex flex-column-reverse my-2'>
-                        <Button variant="danger" onClick={() => navigator('/')}>Cancel</Button>
+                        <Button variant="danger" onClick={() => navigator('/')}>Back</Button>
                     </Col>
                 </Row>
                 <Row>
