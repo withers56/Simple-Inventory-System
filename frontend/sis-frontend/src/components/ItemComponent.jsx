@@ -370,6 +370,7 @@ function checkIfOrignalCategory(currentCategory) {
                             {checkIfCreatingOrUpdating(id)}
 
                         </div>
+                        
                         <button className='btn btn-success' onClick={saveOrUpdateItem}>Submit</button>
                     </form>
                 </div>
