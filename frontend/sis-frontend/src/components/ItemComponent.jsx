@@ -60,9 +60,10 @@ function getSelectedInventory(id) {
     getItem(id).then((response) => {
         console.log(response.data);
         
-
         setName(response.data.name);
         setURL(response.data.url);
+
+        
 
         if (response.data.category == null) {
             console.log('category is null');
@@ -70,14 +71,14 @@ function getSelectedInventory(id) {
             setOriginalCatId(null);
             setOriginalCatName(null);
             
+            parseCategorySelect('uncategorized');
           } else {
+
             setOriginalCatName(response.data.category.name);
             setOriginalCatId(response.data.category.id);
-          }
 
-          console.log('cat info in fetch: ' + originalCatId, originalCatName);
-          
-        
+            parseCategorySelect(response.data.category.name + ',' + response.data.category.id);
+          }
     }).catch(error => {
         console.error(error);
     })
