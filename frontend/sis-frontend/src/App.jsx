@@ -10,6 +10,7 @@ import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import UpdateInventoryComponent from './components/UpdateInventoryComponent'
 import ListCategoryComponent from './components/ListCategoryComponent'
 import Login from './components/Login'
+import ProtectedRoutes from './utils/ProtectedRoutes'
 
 function App() {
   
@@ -19,14 +20,18 @@ function App() {
       <BrowserRouter>
         <HeaderComponent />
         <Routes>
-          <Route path='/' element= { <ListInventoryComponent /> }></Route> 
-          <Route path='/edit-inventory/:id' element = { <InventoryComponent /> }></Route>
-          <Route path='/items' element = { <ListItemComponent /> }></Route>
-          <Route path='/add-item' element = { <ItemComponent /> }></Route>
-          <Route path='/edit-item/:id' element = { <ItemComponent /> }></Route> 
-          <Route path='/edit-inventory-settings/:id' element = { <UpdateInventoryComponent /> }></Route>
-          <Route path='/categories' element = { <ListCategoryComponent /> }></Route>
-          <Route path='/login' element = { <Login /> }></Route>
+            <Route path='/login' element = { <Login /> }></Route>
+            <Route element={ <ProtectedRoutes /> }>
+              <Route path='/' element= { <ListInventoryComponent /> }></Route> 
+              <Route path='/edit-inventory/:id' element = { <InventoryComponent /> }></Route>
+              <Route path='/items' element = { <ListItemComponent /> }></Route>
+              <Route path='/add-item' element = { <ItemComponent /> }></Route>
+              <Route path='/edit-item/:id' element = { <ItemComponent /> }></Route> 
+              <Route path='/edit-inventory-settings/:id' element = { <UpdateInventoryComponent /> }></Route>
+              <Route path='/categories' element = { <ListCategoryComponent /> }></Route>
+            </Route>
+            
+          
         </Routes>
         {/* <FooterComponent /> */}
       </BrowserRouter> 

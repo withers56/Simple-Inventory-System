@@ -9,10 +9,12 @@ import CardText from 'react-bootstrap/esm/CardText';
 import { listCategories } from '../services/CategoryService';
 import classnames from 'classnames';
 import LoadingScreen from './LoadingScreen';
+import { isLoggedIn } from '../auth/auth';
 
 
 const ListInventoryComponent = () => {
 const [isLoading, setIsLoading] = useState(true);
+const isUserLoggedIn = isLoggedIn();
 
 const[ALL_INVENTORIES, setALL_INVENTORIES] = useState([]);
 const[ALL_CATEGORIZED_INVENTORIES, setALL_CATEGORIZED_INVENTORIES] = useState([]);
@@ -26,8 +28,15 @@ const [categories, setCategories] = useState([]);
 
 useEffect(() => {
 
+    console.log(isUserLoggedIn);
+    
+
+    if(!isUserLoggedIn) {
+        navigator("/login", { replace: true });
+    }
+
     getAllInventories();
-}, [])
+}, [isUserLoggedIn]);
 
 useEffect(() => {
     
