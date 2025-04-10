@@ -16,6 +16,10 @@ export function setToken(token) {
     }
 }
 
+export function logout() {
+    window.localStorage.removeItem('access_token');
+}
+
 export function isLoggedIn() {
 
     if (!window.localStorage.getItem('access_token')) {
