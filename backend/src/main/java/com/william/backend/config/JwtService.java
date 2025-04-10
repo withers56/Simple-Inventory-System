@@ -1,12 +1,14 @@
 package com.william.backend.config;
 
 import java.security.Key;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -27,10 +29,22 @@ public class JwtService {
     }
 
     public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+        System.out.println("user details: " + userDetails);
+        HashMap<String, Object> extraClaims = new HashMap<>();
+
+        Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
+
+        for (GrantedAuthority authority : authorities) {
+            String roleName = authority.getAuthority();
+
+            extraClaims.put("role", roleName);
+        }
+        
+        return generateToken(extraClaims, userDetails);
     }
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+        
         return Jwts.builder()
                     .setClaims(extraClaims)
                     .setSubject(userDetails.getUsername())
